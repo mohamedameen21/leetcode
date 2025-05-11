@@ -18,6 +18,7 @@ class Solution {
         if(root == null) return root;
         if(root.left == null && root.right == null) return key == root.val ? null : root;
         if(root.val == key) return mergeSubtrees(root.left, root.right);
+        // for these above conditions the parent will be null so I handled them separetly
 
         TreeNode parent = null;
         TreeNode cur = root;
