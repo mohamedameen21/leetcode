@@ -26,7 +26,7 @@ class Solution {
                         k++;
                     } else {
                         List<Integer> temp = Arrays.asList(nums[i], nums[j], nums[k], nums[l]);
-                        Collections.sort(temp);
+                        // Collections.sort(temp);
                         list.add(temp);
                         l--;
                         k++;
