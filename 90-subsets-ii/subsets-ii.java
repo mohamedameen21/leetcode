@@ -8,8 +8,7 @@ class Solution {
         List<List<Integer>> list = new ArrayList<>();
 
         if (index >= nums.length) {
-            List<Integer> l = new ArrayList<>(temp); // deep copy
-            list.add(l);
+            list.add(temp);
             return list;
         }
 
