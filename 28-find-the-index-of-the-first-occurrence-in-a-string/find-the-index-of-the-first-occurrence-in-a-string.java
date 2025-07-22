@@ -1,7 +1,6 @@
 class Solution {
     public int strStr(String haystack, String needle) {
         int[] lms = getLPS(needle);
-        System.out.println(Arrays.toString(lms));
         int i = 0;
         int j = 0;
 
@@ -11,8 +10,6 @@ class Solution {
                 j++;
 
                 if(j == needle.length()) { // found the element
-                    System.out.println(i);
-                    System.out.println(j);
                     return i - needle.length();
                 }
             } else {
@@ -55,7 +52,6 @@ class Solution {
                 } else {
                     lms[j] = 0;
                     j++;
-                    // i++;
                 }
             }
         }
