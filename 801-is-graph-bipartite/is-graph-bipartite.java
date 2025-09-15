@@ -5,7 +5,7 @@ class Solution {
         
         for(int i = 0; i < colour.length; i++) {
             if(colour[i] == -1) {
-                if(!bfs(graph, colour, i)) {
+                if(!dfs(graph, colour, i, 0)) {
                     return false;
                 }
             }
@@ -29,6 +29,22 @@ class Solution {
                 } else if (colourOf[neighbour] == colourOf[node]) {
                     return false;
                 }
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean dfs(int[][] adjacencyArray, int[] colourOf, int index, int colour) {
+        colourOf[index] = colour;
+
+        for(int neighbour : adjacencyArray[index]) {
+            if(colourOf[neighbour] == -1) {
+                if(!dfs(adjacencyArray, colourOf, neighbour, colourOf[index] ^ 1)) {
+                    return false;
+                }
+            } else if(colourOf[neighbour] == colourOf[index]) {
+                return false;
             }
         }
 
