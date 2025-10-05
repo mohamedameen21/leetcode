@@ -1,49 +1,54 @@
 class Solution {
-    public List<Integer> eventualSafeNodes(int[][] adjacencyArray) {
-        int[] visited = new int[adjacencyArray.length];
-        int[] currentPath = new int[adjacencyArray.length];
-        int[] safeNodes = new int[adjacencyArray.length];
+    public List<Integer> eventualSafeNodes(int[][] graph) {
+        List<List<Integer>> adjacencyList = getReversedAdjacencyList(graph);
+        int[] inboundDegree = new int[graph.length];
 
-        for(int i = 0; i < adjacencyArray.length; i++) {
-            if(visited[i] == 0) {
-                checkCycleWithDFS(adjacencyArray, i, visited, currentPath, safeNodes);
+        for(int i = 0; i < graph.length; i++) {
+            for(int neighbour : adjacencyList.get(i)) {
+                inboundDegree[neighbour]++;
             }
         }
 
-        List<Integer> list = new ArrayList<>();
-
-        for(int i = 0; i < safeNodes.length; i++) {
-            if(safeNodes[i] == 1) 
-                list.add(i);
+        Queue<Integer> queue = new LinkedList<>();
+        for(int i = 0; i < inboundDegree.length; i++) {
+            if(inboundDegree[i] == 0) {
+                queue.add(i);
+            }
         }
 
-        return list;
-    }
+        List<Integer> safeNodes = new ArrayList<>();
 
-// Here we are just using the same logic for checking the cycle in the graph, but here we also makr the path of the cycle - So that we know
-// that it won't be a part of the safe nodes.
+        while(!queue.isEmpty()) {
+            int node = queue.remove();
+            safeNodes.add(node);
 
-// we will check safe node or not only after checking all the adjacent nodes on that node
-    private static boolean checkCycleWithDFS(int[][] adjacencyArray, int nodeIndex, int[] visited, int[] currentPath, int[] safeNodes) {
-        visited[nodeIndex] = 1;
-        currentPath[nodeIndex] = 1;
+            for(int neighbour : adjacencyList.get(node)) {
+                inboundDegree[neighbour]--;
 
-        for(int neighbourIndex : adjacencyArray[nodeIndex]) {
-            if(currentPath[neighbourIndex] == 1) {
-                return true;
-            }
-
-            if(visited[neighbourIndex] == 0) {
-                if(checkCycleWithDFS(adjacencyArray, neighbourIndex, visited, currentPath, safeNodes)) {
-                    return true;
+                if(inboundDegree[neighbour] == 0) {
+                    queue.add(neighbour);
                 }
             }
         }
 
-        // when the execution came here then this node doesn't find a cycle or doesn't a part of the cycle
-        safeNodes[nodeIndex] = 1;
-        currentPath[nodeIndex] = 0;
+        Collections.sort(safeNodes);
 
-        return false;
+        return safeNodes;
+    }
+
+    private List<List<Integer>> getReversedAdjacencyList(int[][] graph) {
+        List<List<Integer>> list = new ArrayList<>();
+
+        for(int i = 0; i < graph.length; i++) {
+            list.add(new ArrayList<>());
+        }
+
+        for(int v = 0; v < graph.length; v++) {
+            for(int u = 0; u < graph[v].length; u++) {
+                list.get(graph[v][u]).add(v);
+            }
+        }
+
+        return list;
     }
 }
