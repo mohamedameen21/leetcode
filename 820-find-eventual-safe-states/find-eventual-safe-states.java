@@ -29,12 +29,10 @@ class Solution {
         currentPath[nodeIndex] = 1;
 
         for(int neighbourIndex : adjacencyArray[nodeIndex]) {
-            // If we deduct a cycle we return true and now move for next node or cycle or another component 
-            if(visited[neighbourIndex] == 1 && currentPath[neighbourIndex] == 1) {
+            if(currentPath[neighbourIndex] == 1) {
                 return true;
             }
 
-            // Considering only the non visited node, if the node is already visited then those neighbour too visied, so don't need to revisit
             if(visited[neighbourIndex] == 0) {
                 if(checkCycleWithDFS(adjacencyArray, neighbourIndex, visited, currentPath, safeNodes)) {
                     return true;
