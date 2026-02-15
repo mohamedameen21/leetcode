@@ -1,15 +1,35 @@
 class Solution {
+    // public int uniquePaths(int m, int n) {
+    //     int[][] dp = new int[m][n];
+
+    //     for (int[] d : dp) {
+    //         Arrays.fill(d, -1);
+    //     }
+
+    //     // return getUniquePath(m, n, m - 1, n - 1, dp);
+
+    //     return getUniquePath(m, n);
+    // }
+
     public int uniquePaths(int m, int n) {
-        int[][] dp = new int[m][n];
+          // We need to make (m-1) down moves and (n-1) right moves
+          // Total moves = (m-1) + (n-1) = m + n - 2
+          // We choose which (m-1) positions are down moves (or which (n-1) are right)
+          // Answer = C(m+n-2, m-1) = (m+n-2)! / ((m-1)! * (n-1)!)
 
-        for (int[] d : dp) {
-            Arrays.fill(d, -1);
-        }
+          int totalMoves = m + n - 2;
+          int k = Math.min(m - 1, n - 1); // optimize: choose smaller k
 
-        // return getUniquePath(m, n, m - 1, n - 1, dp);
+          // Calculate C(totalMoves, k) efficiently
+          // C(n, k) = (n * (n-1) * ... * (n-k+1)) / (k * (k-1) * ... * 1)
+          long result = 1;
 
-        return getUniquePath(m, n);
-    }
+          for (int i = 1; i <= k; i++) {
+              result = result * (totalMoves - k + i) / i;
+          }
+
+          return (int) result;
+      }
 
     // Memoization
     private static int getUniquePath(int m, int n, int i, int j, int[][] dp) {
@@ -54,6 +74,7 @@ class Solution {
     //     return dp[m-1][n-1];
     // }
 
+// Tabulation with Space Optimization 
     private static int getUniquePath(int m, int n) {
         int[] prevRow = new int[n];
 
