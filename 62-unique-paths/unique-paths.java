@@ -33,22 +33,47 @@ class Solution {
         return dp[i][j];
     }
 
+// Tabulation
+    // private static int getUniquePath(int m, int n) {
+    //     int[][] dp = new int[m][n];
+    //     dp[0][0] = 1;
+
+    //     for (int i = 0; i < m; i++) {
+    //         for (int j = 0; j < n; j++) {
+    //             if (i == 0 && j == 0) {
+    //                 continue;
+    //             } 
+
+    //             int up = (i - 1 >= 0) ? dp[i-1][j] : 0;
+    //             int left = (j - 1 >=0) ? dp[i][j-1] : 0;
+
+    //             dp[i][j] = up + left;
+    //         }
+    //     }
+
+    //     return dp[m-1][n-1];
+    // }
+
     private static int getUniquePath(int m, int n) {
-        int[][] dp = new int[m][n];
-        dp[0][0] = 1;
+        int[] prevRow = new int[n];
 
         for (int i = 0; i < m; i++) {
+            int[] curRow = new int[n];
+
             for (int j = 0; j < n; j++) {
+                if (i == 0 && j == 0) {
+                    curRow[j] = 1;
+                    continue;
+                } 
 
-                if (i == 0 && j == 0) continue;
+                int up = prevRow[j];
+                int left = (j - 1 >=0) ? curRow[j-1] : 0;
 
-                int up = (i - 1 >= 0) ? dp[i-1][j] : 0;
-                int left = (j - 1 >=0) ? dp[i][j-1] : 0;
-
-                dp[i][j] = up + left;
+                curRow[j] = up + left;
             }
+            prevRow = curRow;
         }
 
-        return dp[m-1][n-1];
+        return prevRow[n-1];
     }
 }
