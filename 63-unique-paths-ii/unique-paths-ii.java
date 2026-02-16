@@ -1,6 +1,6 @@
 class Solution {
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-        if(obstacleGrid[0][0] == 1) {
+        if(obstacleGrid[0][0] == 1) { // if thereis obstacle in start cell, then we can't able to move anywhere
             return 0;
         }
 
@@ -10,9 +10,12 @@ class Solution {
             Arrays.fill(d, -1);
         }
 
-        return getUniquePath(obstacleGrid, obstacleGrid.length - 1, obstacleGrid[0].length -1, dp);
+        // return getUniquePath(obstacleGrid, obstacleGrid.length - 1, obstacleGrid[0].length -1, dp);
+
+        return getUniquePath(obstacleGrid);
     }
 
+// Memoization. TC: O(MxN) SC: O(Path [m+n]) + O(m*n)
     private static int getUniquePath(int[][] grid, int i, int j, int[][] dp) {
         if (i == 0 && j == 0) {
             return 1;
@@ -36,5 +39,29 @@ class Solution {
         dp[i][j] = up + left;
 
         return dp[i][j];
+    }
+
+    private static int getUniquePath(int[][] grid) {
+        int[][] dp = new int[grid.length][grid[0].length];
+        dp[0][0] = 1;
+
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                } 
+
+                if(grid[i][j] != 0) {
+                    continue;
+                }
+
+                int up = (i - 1 >= 0) ? dp[i-1][j] : 0;
+                int left = (j - 1 >=0) ? dp[i][j-1] : 0;
+
+                dp[i][j] = up + left;
+            }
+        }
+
+        return dp[grid.length-1][grid[0].length-1];
     }
 }
