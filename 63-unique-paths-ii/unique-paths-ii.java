@@ -41,13 +41,41 @@ class Solution {
         return dp[i][j];
     }
 
+// Tabulation TC: O(N*M) SC: O(M*N)
+    // private static int getUniquePath(int[][] grid) {
+    //     int[][] dp = new int[grid.length][grid[0].length];
+    //     dp[0][0] = 1;
+
+    //     for (int i = 0; i < grid.length; i++) {
+    //         for (int j = 0; j < grid[i].length; j++) {
+    //             if (i == 0 && j == 0) {
+    //                 continue;
+    //             } 
+
+    //             if(grid[i][j] != 0) {
+    //                 continue;
+    //             }
+
+    //             int up = (i - 1 >= 0) ? dp[i-1][j] : 0;
+    //             int left = (j - 1 >=0) ? dp[i][j-1] : 0;
+
+    //             dp[i][j] = up + left;
+    //         }
+    //     }
+
+    //     return dp[grid.length-1][grid[0].length-1];
+    // }
+
+    // Tabulation with Space Optimization  TC: O(N*M) SC: O(2N)
     private static int getUniquePath(int[][] grid) {
-        int[][] dp = new int[grid.length][grid[0].length];
-        dp[0][0] = 1;
+        int[] prevRow = new int[grid[0].length];
 
         for (int i = 0; i < grid.length; i++) {
+            int[] curRow = new int[grid[0].length];
+
             for (int j = 0; j < grid[i].length; j++) {
                 if (i == 0 && j == 0) {
+                    curRow[j] = 1;
                     continue;
                 } 
 
@@ -55,13 +83,15 @@ class Solution {
                     continue;
                 }
 
-                int up = (i - 1 >= 0) ? dp[i-1][j] : 0;
-                int left = (j - 1 >=0) ? dp[i][j-1] : 0;
+                int up = prevRow[j];
+                int left = (j - 1 >=0) ? curRow[j-1] : 0;
 
-                dp[i][j] = up + left;
+                curRow[j] = up + left;
             }
+            prevRow = curRow;
         }
 
-        return dp[grid.length-1][grid[0].length-1];
+        return prevRow[grid[0].length-1];
     }
+
 }
