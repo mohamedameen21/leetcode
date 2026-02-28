@@ -39,31 +39,58 @@ class Solution {
         return dp[i][j];
     }
 
-    private static int getMinPathSum(int[][] matrix) {
-        int[][] dp = new int[matrix.length][matrix.length];
+    // private static int getMinPathSum(int[][] matrix) {
+    //     int[][] dp = new int[matrix.length][matrix.length];
 
-        for (int[] d : dp) {
-            Arrays.fill(d, -1);
-        }
+    //     for (int i = 0; i < matrix[matrix.length - 1].length; i++) {
+    //         dp[matrix.length - 1][i] = matrix[matrix.length - 1][i];
+    //     }
+
+    //     //  To decide the start cell in the last row
+    //     for (int i = matrix.length - 2; i >= 0; i--) {
+    //         for (int j = 0; j < matrix[i].length; j++) {
+    //             int down = dp[i+1][j];
+    //             int diagonalLeft = (j > 0) ? dp[i+1][j-1] : Integer.MAX_VALUE;
+    //             int diagonalRight = (j < matrix[i+1].length - 1) ? dp[i+1][j+1] : Integer.MAX_VALUE;
+
+    //             dp[i][j] = Math.min(down, Math.min(diagonalLeft, diagonalRight)) + matrix[i][j];
+    //         }   
+    //     }
+
+    //     int min = Integer.MAX_VALUE;
+
+    //     for(int d : dp[0]) {
+    //         min =  Math.min(d, min);
+    //     }
+
+    //     return min;
+    // }
+
+    private static int getMinPathSum(int[][] matrix) {
+        int[] nextDP = new int[matrix[0].length];
 
         for (int i = 0; i < matrix[matrix.length - 1].length; i++) {
-            dp[matrix.length - 1][i] = matrix[matrix.length - 1][i];
+            nextDP[i] = matrix[matrix.length - 1][i];
         }
 
         //  To decide the start cell in the last row
-        for (int i = matrix[matrix.length - 1].length - 2; i >= 0; i--) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                int down = dp[i+1][j];
-                int diagonalLeft = (j > 0) ? dp[i+1][j-1] : Integer.MAX_VALUE;
-                int diagonalRight = (j < matrix[i+1].length - 1) ? dp[i+1][j+1] : Integer.MAX_VALUE;
+        for (int i = matrix.length - 2; i >= 0; i--) {
+            int[] curDP = new int[matrix[0].length];
 
-                dp[i][j] = Math.min(down, Math.min(diagonalLeft, diagonalRight)) + matrix[i][j];
-            }   
+            for (int j = 0; j < matrix[i].length; j++) {
+                int down = nextDP[j];
+                int diagonalLeft = (j > 0) ? nextDP[j-1] : Integer.MAX_VALUE;
+                int diagonalRight = (j < matrix[i+1].length - 1) ? nextDP[j+1] : Integer.MAX_VALUE;
+
+                curDP[j] = Math.min(down, Math.min(diagonalLeft, diagonalRight)) + matrix[i][j];
+            } 
+
+            nextDP = curDP;
         }
 
         int min = Integer.MAX_VALUE;
 
-        for(int d : dp[0]) {
+        for(int d : nextDP) {
             min =  Math.min(d, min);
         }
 
