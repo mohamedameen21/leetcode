@@ -45,27 +45,55 @@ class Solution {
     }
 
 // Tabulation. TC:O(N*K) SC:(N*K)
-    private static boolean isTargetExists(int[] arr, int target) {
-        boolean[][] dp = new boolean[arr.length][target+1];
+    // private static boolean isTargetExists(int[] arr, int target) {
+    //     boolean[][] dp = new boolean[arr.length][target+1];
 
-        for(int i = 0; i < dp.length; i++) {
-            dp[i][0] = true; 
-        }
-        if(arr[0] <= target) dp[0][arr[0]] = true;
+    //     for(int i = 0; i < dp.length; i++) {
+    //         dp[i][0] = true; 
+    //     }
+    //     if(arr[0] <= target) dp[0][arr[0]] = true;
 
-        for(int i = 1; i < arr.length; i++) {
-            for(int j = 0; j <= target; j++) {
-                boolean notTake = dp[i-1][j];
+    //     for(int i = 1; i < arr.length; i++) {
+    //         for(int j = 0; j <= target; j++) {
+    //             boolean notTake = dp[i-1][j];
+    //             boolean take = false;
+
+    //             if(j >= arr[i]) {
+    //                 take = dp[i-1][j-arr[i]];
+    //             }
+
+    //             dp[i][j] = notTake || take;
+    //         }
+    //     }
+
+    //     return dp[arr.length-1][target];
+    // }
+
+// Space Optimization. TC: O(N*K) SC:O(K)
+    private static boolean isTargetExists(int[] arr, int k) {
+        boolean[] dp1 = new boolean[k+1];
+
+        dp1[0] = true;
+        if(arr[0] <= k) dp1[arr[0]] = true;
+
+        for(int index = 1; index < arr.length; index++) {
+            
+            boolean[] dp2 = new boolean[k+1];
+
+            for(int target = 0; target <= k; target++) {
+                boolean notTake = dp1[target];
                 boolean take = false;
 
-                if(j >= arr[i]) {
-                    take = dp[i-1][j-arr[i]];
+                if(target >= arr[index]) {
+                    take = dp1[target - arr[index]];
                 }
 
-                dp[i][j] = notTake || take;
+                dp2[target] = take || notTake;
             }
+
+            dp1 = dp2;
         }
 
-        return dp[arr.length-1][target];
+        return dp1[k];
     }
 }
