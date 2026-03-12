@@ -48,6 +48,7 @@ class Solution {
         return dp[index][amount];
     }
 
+// Tabulation
     private static long getMin(int[] coins, int amount) {
         long[][] dp = new long[coins.length][amount + 1];
 
@@ -67,4 +68,25 @@ class Solution {
 
         return dp[coins.length-1][amount];
     }
+
+// Space Optimization
+    // private static long getMin(int[] coins, int amount) {
+    //     long[] dp = new long[amount + 1];
+
+    //     dp[0] = 0;
+    //     for (int a = 1; a <= amount; a++) {
+    //         dp[a] = (coins[0] > a || (a % coins[0] != 0)) ? Integer.MAX_VALUE : a / coins[0];
+    //     }
+
+    //     for (int index = 1; index < coins.length; index++) {
+    //         for (int a = coins[index]; a <= amount; a++) {
+    //             long take = 1 + dp[a - coins[index]];
+    //             long notTake = dp[a];
+
+    //             dp[a] = Math.min(take, notTake);
+    //         }
+    //     }
+
+    //     return dp[amount];
+    // }
 }
