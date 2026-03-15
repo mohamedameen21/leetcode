@@ -73,8 +73,10 @@ class Solution {
         }
 
         for (int index = 1; index < coins.length; index++) {
-            for (int t = coins[index]; t <= target; t++) {
-                int take = dp[t - coins[index]];
+            for (int t = 0; t <= target; t++) {
+                // int take = dp[t - coins[index]];
+                int take = (coins[index] <= t) ? dp[t - coins[index]] : 0;
+
                 int notTake = dp[t];
 
                 dp[t] = take + notTake;
