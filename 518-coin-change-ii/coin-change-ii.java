@@ -5,7 +5,9 @@ class Solution {
             Arrays.fill(d, -1);
         }
 
-        return count(coins, coins.length-1, amount, dp);
+        // return count(coins, coins.length-1, amount, dp);
+
+        return count(coins, amount);
     }
 
     private static int count(int[] coins, int index, int target, int[][] dp) {
@@ -27,5 +29,34 @@ class Solution {
         dp[index][target] = take + notTake;
 
         return dp[index][target];
+    }
+
+    private static int count(int[] coins, int target) {
+        int n = coins.length;
+        int[][] dp = new int[n][target + 1];
+
+        // base case: amount 0 can always be made with empty combination
+        for (int i = 0; i < n; i++) {
+            dp[i][0] = 1;
+        }
+
+
+        // first row: using only coins[0]
+        for (int t = 1; t <= target; t++) {
+            if (t % coins[0] == 0) {
+                dp[0][t] = 1;
+            }
+        }
+
+        for(int index = 1; index < coins.length; index++) {
+            for(int t = 0; t <= target; t++) {
+                int take = (coins[index] <= t) ? dp[index][t - coins[index]] : 0;
+                int notTake = dp[index -1][t];
+
+                dp[index][t] = take + notTake;
+            }
+        }
+
+        return dp[coins.length-1][target];
     }
 }
