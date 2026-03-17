@@ -5,7 +5,7 @@ class Solution {
             Arrays.fill(d, -1);
         }
 
-        int ans = (int) getMin(coins, amount);
+        int ans = (int) getMin(coins, coins.length-1, amount, dp);
 
         return (ans == Integer.MAX_VALUE) ? -1 : ans;
     }
@@ -48,26 +48,29 @@ class Solution {
         return dp[index][amount];
     }
 
+
 // Tabulation
-    private static long getMin(int[] coins, int amount) {
-        long[][] dp = new long[coins.length][amount + 1];
+    // private static long getMin(int[] coins, int amount) {
+    //     long[][] dp = new long[coins.length][amount + 1];
 
-        dp[0][0] = 0;
-        for (int a = 1; a <= amount; a++) {
-            dp[0][a] = (coins[0] > a || (a % coins[0] != 0)) ? Integer.MAX_VALUE : a / coins[0];
-        }
+    //     dp[0][0] = 0;
+    //     for (int a = 1; a <= amount; a++) {
+    //         dp[0][a] = (coins[0] > a || (a % coins[0] != 0)) ? Integer.MAX_VALUE : a / coins[0];
+    //     }
 
-        for (int index = 1; index < coins.length; index++) {
-            for (int a = 0; a <= amount; a++) {
-                long take = 1 + ((coins[index] <= a) ? dp[index][a - coins[index]] : Integer.MAX_VALUE);
-                long notTake = dp[index-1][a];
+    //     for (int index = 1; index < coins.length; index++) {
+    //         for (int a = 0; a <= amount; a++) {
+    //             long take = 1 + ((coins[index] <= a) ? dp[index][a - coins[index]] : Integer.MAX_VALUE);
+    //             long notTake = dp[index-1][a];
 
-                dp[index][a] = Math.min(take, notTake);
-            }
-        }
+    //             dp[index][a] = Math.min(take, notTake);
+    //         }
+    //     }
 
-        return dp[coins.length-1][amount];
-    }
+    //     return dp[coins.length-1][amount];
+    // }
+
+
 
 // Space Optimization
     // private static long getMin(int[] coins, int amount) {
