@@ -1,6 +1,8 @@
 class Solution {
     public String shortestCommonSupersequence(String str1, String str2) {
-        return scsTabulation(str1, str2);
+        // return scsTabulation(str1, str2);
+
+        return scsMemoization(str1, str2);
     }
 
     // ================= TABULATION =================
