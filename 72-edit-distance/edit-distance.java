@@ -5,7 +5,9 @@ class Solution {
             Arrays.fill(d, -1);
         }
 
-        return minDistance(word1, word1.length()-1, word2, word2.length()-1, dp);
+        // return minDistance(word1, word1.length()-1, word2, word2.length()-1, dp);
+
+        return minDistanceTab(word1, word2);
     }
 
     private static int minDistance(String s1, int i, String s2, int j, int[][] dp) {
@@ -28,5 +30,35 @@ class Solution {
         dp[i][j] = 1 + Math.min(insert, Math.min(delete, replace)); 
 
         return dp[i][j];
+    }
+
+    private static int minDistanceTab(String s1, String s2) {
+        int[][] dp = new int[s1.length()+1][s2.length()+1];
+
+        for(int j = 0; j <= s2.length(); j++) {
+            dp[0][j] = j;
+        }
+
+        for(int i = 0; i <= s1.length(); i++) {
+            dp[i][0] = i;
+        }
+
+        for(int i = 1; i <= s1.length(); i++) {
+            for(int j = 1; j <= s2.length(); j++) {
+                
+                if(s1.charAt(i-1) == s2.charAt(j-1)) {
+                    dp[i][j] = dp[i-1][j-1];
+                    continue;
+                }
+
+                int insert = dp[i][j-1];
+                int delete = dp[i-1][j];
+                int replace = dp[i-1][j-1];
+
+                dp[i][j] = 1 + Math.min(insert, Math.min(delete, replace)); 
+            }
+        }
+
+        return dp[s1.length()][s2.length()];
     }
 }
